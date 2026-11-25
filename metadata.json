@@ -1,0 +1,6 @@
+{
+  "name": "Grone Global Limited — Paints & General Contracting Portal",
+  "description": "Official 2-in-1 corporate web portal for Grone Global Limited, featuring Grone Global Paints (architectural coatings, contract production, and direct paint ordering) and Grone Global Ltd General Contracting Subdivision (civil works, turnkey construction, and structural renovations).",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
