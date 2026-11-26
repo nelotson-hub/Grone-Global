@@ -1,8 +1,8 @@
 /* Clymax Signature Hotel & Suites — site behaviour */
 (() => {
   // ── Hotel details: fill these in and every WhatsApp / Facebook link updates ──
-  const WHATSAPP_NUMBER = '';   // international format, digits only, e.g. '2348012345678'
-  const FACEBOOK_URL = '';      // e.g. 'https://www.facebook.com/clymaxsignature'
+  const WHATSAPP_NUMBER = '2347073369981';   // Clymax front desk (WhatsApp Business), digits only
+  const FACEBOOK_URL = 'https://www.facebook.com/share/1RbhdyBDw5/';
 
   const $ = (s, r = document) => r.querySelector(s);
   const $$ = (s, r = document) => [...r.querySelectorAll(s)];
@@ -79,16 +79,29 @@
   pairDates($('#r-in'), $('#r-out'));
   const nice = v => v ? new Date(v + 'T12:00').toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' }) : '';
 
-  // ── booking bar → carries the choice into the reservation form ──
+  const openWhatsApp = (text) => {
+    const a = document.createElement('a');
+    a.href = waLink(text); a.target = '_blank'; a.rel = 'noopener';
+    document.body.appendChild(a); a.click(); a.remove();
+  };
+
+  // ── booking bar → straight to the front desk on WhatsApp ──
   $('#bookbar').addEventListener('submit', e => {
     e.preventDefault();
-    const f = e.currentTarget;
-    $('#r-in').value = f.checkin.value; $('#r-in').dispatchEvent(new Event('change'));
-    if (f.checkout.value) $('#r-out').value = f.checkout.value;
-    $('#r-guests').value = f.guests.value;
-    if (f.room.value !== 'Any room') $('#r-room').value = f.room.value;
-    $('#reserve').scrollIntoView({ behavior: reduce ? 'auto' : 'smooth' });
-    setTimeout(() => $(f.checkin.value ? '#r-name' : '#r-in').focus({ preventScroll: true }), reduce ? 0 : 700);
+    const f = e.currentTarget, note = $('#bookbar-note');
+    if (!f.checkin.value || !f.checkout.value) {
+      note.textContent = !f.checkin.value ? 'Choose your check-in date first.' : 'Choose your check-out date.';
+      (f.checkin.value ? f.checkout : f.checkin).focus(); return;
+    }
+    openWhatsApp([
+      'Hello Clymax Signature, I would like to book a room.',
+      `Room: ${f.room.value}`,
+      `Check in: ${nice(f.checkin.value)}`,
+      `Check out: ${nice(f.checkout.value)}`,
+      `Guests: ${f.guests.value}`,
+      'Please confirm availability and the rate.'
+    ].join('\n'));
+    note.textContent = 'WhatsApp is opening with your dates. Press send there and the front desk will confirm.';
   });
 
   // ── a room card pre-selects its room ──
@@ -107,12 +120,6 @@
     if (first) first.focus();
     return n;
   };
-  const openWhatsApp = (text) => {
-    const a = document.createElement('a');
-    a.href = waLink(text); a.target = '_blank'; a.rel = 'noopener';
-    document.body.appendChild(a); a.click(); a.remove();
-  };
-
   $('#reserve-form').addEventListener('submit', e => {
     e.preventDefault();
     const f = e.currentTarget, status = $('.form__status', f);
