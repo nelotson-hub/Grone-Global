@@ -15,7 +15,8 @@
 
   // ── header: transparent over the film, solid once you scroll ──
   const nav = $('#nav');
-  const onScroll = () => nav.classList.toggle('is-solid', scrollY > 40);
+  const hasHero = !!$('.hero');
+  const onScroll = () => nav.classList.toggle('is-solid', !hasHero || scrollY > 40);
   onScroll(); addEventListener('scroll', onScroll, { passive: true });
 
   // ── full-screen menu ──
@@ -75,8 +76,8 @@
       if (!b.value || b.value <= a.value) b.value = iso(next);
     });
   };
-  pairDates($('#b-in'), $('#b-out'));
-  pairDates($('#r-in'), $('#r-out'));
+  if ($('#b-in')) pairDates($('#b-in'), $('#b-out'));
+  if ($('#r-in')) pairDates($('#r-in'), $('#r-out'));
   const nice = v => v ? new Date(v + 'T12:00').toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' }) : '';
 
   const openWhatsApp = (text) => {
@@ -86,7 +87,7 @@
   };
 
   // ── booking bar → straight to the front desk on WhatsApp ──
-  $('#bookbar').addEventListener('submit', e => {
+  $('#bookbar')?.addEventListener('submit', e => {
     e.preventDefault();
     const f = e.currentTarget, note = $('#bookbar-note');
     if (!f.checkin.value || !f.checkout.value) {
@@ -120,7 +121,7 @@
     if (first) first.focus();
     return n;
   };
-  $('#reserve-form').addEventListener('submit', e => {
+  $('#reserve-form')?.addEventListener('submit', e => {
     e.preventDefault();
     const f = e.currentTarget, status = $('.form__status', f);
     const n = validate(f, el => el.id === 'r-out' && f.checkin.value && el.value <= f.checkin.value);
@@ -140,7 +141,7 @@
     status.textContent = 'WhatsApp is opening with your request. Press send there and the front desk will confirm.';
   });
 
-  $('#contact-form').addEventListener('submit', e => {
+  $('#contact-form')?.addEventListener('submit', e => {
     e.preventDefault();
     const f = e.currentTarget, status = $('.form__status', f);
     const n = validate(f);
@@ -150,7 +151,7 @@
   });
 
   // ── newsletter: posts to subscribe.php on the hotel's hosting ──
-  $('#news-form').addEventListener('submit', async e => {
+  $('#news-form')?.addEventListener('submit', async e => {
     e.preventDefault();
     const f = e.currentTarget, status = $('.form__status', f), email = f.email.value.trim();
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { status.textContent = 'Write an email address with an @, like name@example.com.'; f.email.focus(); return; }
@@ -163,6 +164,14 @@
       status.textContent = 'We couldn’t subscribe you just now. Please try again in a minute.';
     }
   });
+
+  // ── What we offer: See more ──
+  $$('.offer__btn').forEach(b => b.addEventListener('click', () => {
+    const open = b.getAttribute('aria-expanded') !== 'true';
+    b.setAttribute('aria-expanded', String(open));
+    document.getElementById(b.getAttribute('aria-controls')).hidden = !open;
+    $('span', b).textContent = open ? 'See less' : 'See more';
+  }));
 
   // ── gallery lightbox ──
   const lb = $('#lightbox'), lbImg = $('img', lb);

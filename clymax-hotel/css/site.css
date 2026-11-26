@@ -98,7 +98,7 @@ html { scrollbar-color: var(--gold-deep) var(--sand); }
 .menu__close svg { width: 26px; height: 26px; }
 .menu__body { width: min(100% - 2 * var(--gut), 1280px); margin: 0 auto; display: grid; grid-template-columns: 1.4fr 1fr; gap: 48px; align-items: center; overflow: auto; padding-block: 24px; }
 .menu__links { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; counter-reset: m; }
-.menu__links a { display: inline-block; font: 400 clamp(2rem, 1.3rem + 3vw, 4rem)/1.15 var(--f-display); text-decoration: none; color: var(--ivory); transition: color .3s, transform .4s var(--ease); }
+.menu__links a { display: inline-block; padding: 4px 0; font: 400 clamp(1.35rem, 1.05rem + 1.3vw, 2.4rem)/1.25 var(--f-display); text-decoration: none; color: var(--ivory); transition: color .3s, transform .4s var(--ease); }
 .menu__links a:hover { color: var(--gold); transform: translateX(10px); }
 .menu.is-open .menu__links li { animation: rise .7s var(--ease) both; }
 .menu.is-open .menu__links li:nth-child(2) { animation-delay: .04s } .menu.is-open .menu__links li:nth-child(3) { animation-delay: .08s } .menu.is-open .menu__links li:nth-child(4) { animation-delay: .12s } .menu.is-open .menu__links li:nth-child(5) { animation-delay: .16s } .menu.is-open .menu__links li:nth-child(6) { animation-delay: .2s } .menu.is-open .menu__links li:nth-child(7) { animation-delay: .24s }
@@ -118,7 +118,7 @@ html { scrollbar-color: var(--gold-deep) var(--sand); }
   radial-gradient(ellipse 70% 55% at 50% 52%, rgb(18 15 11 / .42), transparent 75%),
   linear-gradient(180deg, rgb(18 15 11 / .7) 0%, rgb(18 15 11 / .3) 24%, rgb(18 15 11 / .38) 55%, rgb(18 15 11 / .85) 100%); }
 .hero__inner { width: min(100% - 2 * var(--gut), 1120px); text-align: center; display: grid; justify-items: center; gap: clamp(18px, 2.4vw, 30px); padding: calc(var(--nav-h) + 40px) 0 72px; }
-.hero__seal { width: clamp(64px, 6vw, 84px); height: auto; opacity: .95; }
+.hero__seal { width: clamp(120px, 11vw, 176px); height: auto; filter: drop-shadow(0 6px 24px rgb(0 0 0 / .45)); }
 .hero h1 { font-size: var(--t-hero); letter-spacing: .02em; line-height: 1; text-shadow: 0 2px 30px rgb(0 0 0 / .35); }
 .hero h1 span { display: block; font: 500 clamp(.8rem, .7rem + .45vw, 1.05rem)/1 var(--f-text); letter-spacing: .5em; text-transform: uppercase; margin-top: 18px; padding-left: .5em; color: var(--gold); text-shadow: none; }
 .hero__lead { max-width: 46ch; font-size: var(--t-lead); color: rgb(246 241 232 / .88); }
@@ -345,3 +345,96 @@ a.way:hover .way__go { color: var(--gold); transform: translateX(4px); }
   .js .rv.pre { transform: none; opacity: 1; }
   .hero__media video, .hero__media img { animation: none; }
 }
+
+/* ---------- hero: seal + booking bar only ---------- */
+.hero__inner { gap: clamp(26px, 4vw, 48px); }
+.form-note:empty { display: none; }
+@media (max-width: 600px) {
+  .hero__inner { padding: calc(var(--nav-h) + 24px) 0 64px; }
+  .bookbar { box-shadow: 0 18px 40px -24px rgb(0 0 0 / .7); }
+  .bookbar .f { padding: 9px 12px 8px; gap: 1px; }
+  .bookbar label { font-size: 10px; letter-spacing: .12em; }
+  .bookbar input, .bookbar select { font-size: 15px; min-height: 26px; padding: 2px 0; }
+  .bookbar select { padding-right: 14px; background-size: 10px; }
+  .bookbar .btn { min-height: 44px; font-size: 13px; }
+  .form-note { font-size: 13px; }
+}
+
+/* ---------- small button ---------- */
+.btn--sm { min-height: 44px; padding: 0 18px; font-size: 13px; }
+
+/* ---------- what we offer ---------- */
+.offers { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
+.offer { position: relative; display: grid; align-content: start; gap: 8px; padding: 26px 22px 18px; background: var(--paper); border: 1px solid var(--line); transition: border-color .35s var(--ease), box-shadow .35s var(--ease), transform .35s var(--ease); }
+.offer:hover { border-color: rgb(133 102 58 / .45); box-shadow: 0 24px 40px -30px rgb(23 21 15 / .45); transform: translateY(-2px); }
+.offer__ic { width: 46px; height: 46px; display: grid; place-items: center; border-radius: 50%; background: var(--ivory); color: var(--gold-deep); margin-bottom: 6px; }
+.offer__ic svg { width: 22px; height: 22px; }
+.offer h3 { font-size: 1.25rem; }
+.offer__sub { font: 500 13px/1.4 var(--f-text); letter-spacing: .06em; text-transform: uppercase; color: var(--gold-deep); }
+.offer__more p { color: var(--stone); font-size: 15.5px; line-height: 1.6; padding-top: 4px; }
+.offer__btn { justify-self: start; display: inline-flex; align-items: center; gap: 8px; min-height: 40px; margin-top: 6px; padding: 0; background: none; border: 0; border-bottom: 1px solid currentColor; font: 500 13px/1 var(--f-text); letter-spacing: .08em; text-transform: uppercase; color: var(--ink); cursor: pointer; }
+.offer__btn:hover { color: var(--gold-deep); }
+.offer__btn svg { width: 14px; height: 14px; transition: transform .35s var(--ease); }
+.offer__btn[aria-expanded="true"] svg { transform: rotate(45deg); }
+@media (max-width: 1080px) { .offers { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 600px) {
+  .offers { gap: 10px; }
+  .offer { padding: 16px 14px 10px; gap: 4px; }
+  .offer__ic { width: 38px; height: 38px; margin-bottom: 4px; }
+  .offer__ic svg { width: 19px; height: 19px; }
+  .offer h3 { font-size: 1.02rem; }
+  .offer__sub { font-size: 11px; letter-spacing: .04em; }
+  .offer__more p { font-size: 14px; }
+  .offer__btn { font-size: 11.5px; min-height: 36px; }
+}
+
+/* ---------- brand icon buttons ---------- */
+.brands { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 8px; }
+.bi { width: 56px; height: 56px; display: grid; place-items: center; border-radius: 50%; color: #fff; text-decoration: none; box-shadow: 0 10px 22px -12px rgb(0 0 0 / .55); transition: transform .3s var(--ease), box-shadow .3s var(--ease), filter .3s; }
+.bi:hover { transform: translateY(-3px); box-shadow: 0 16px 28px -14px rgb(0 0 0 / .6); filter: brightness(1.07); }
+.bi:active { transform: translateY(0) scale(.96); }
+.bi svg { width: 26px; height: 26px; }
+.bi--wa { background: #25d366; }
+.bi--call { background: #1fa855; }
+.bi--map { background: #fff; color: #4285f4; }
+.bi--ig { background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285aeb 90%); }
+.bi--tt { background: #000; box-shadow: 0 0 0 1px rgb(255 255 255 / .18), 0 10px 22px -12px rgb(0 0 0 / .55); }
+.bi--fb { background: #0866ff; }
+.brands--sm { gap: 10px; }
+.brands--sm .bi { width: 44px; height: 44px; }
+.brands--sm .bi svg { width: 21px; height: 21px; }
+.contact__addr { font-style: normal; color: var(--mist); margin-top: 28px; line-height: 1.7; max-width: 44ch; }
+.contact__addr a { color: var(--ivory); text-decoration-color: rgb(246 241 232 / .35); text-underline-offset: 3px; }
+
+/* ---------- menu on phones ---------- */
+@media (max-width: 600px) {
+  .menu__body { gap: 22px; padding-block: 8px 20px; }
+  .menu__links a { font-size: 1.3rem; padding: 6px 0; }
+  .menu__links a:hover { transform: translateX(6px); }
+  .menu__aside { gap: 18px; padding-top: 20px; font-size: 15px; }
+  .menu__aside h3 { font-size: 11px; margin-bottom: 8px; }
+  .menu__foot { font-size: 13px; padding: 14px 0 20px; }
+}
+@media (max-width: 600px) { .lightbox { max-width: 94vw; } .lightbox__close { top: 8px; right: 8px; } }
+.foot__brand > a { display: inline-block; }
+.foot__brand .brands { margin-top: 22px; }
+
+/* ---------- FAQ page ---------- */
+.faq-page { padding-top: calc(var(--nav-h) + clamp(48px, 6vw, 96px)); min-height: 80svh; }
+.faq__head h1 { font-size: var(--t-h2); }
+@media (max-width: 600px) { .qa summary { padding: 18px 0; font-size: 1.05rem; } .qa .ans { padding: 0 8px 20px 0; font-size: 15px; } }
+
+/* ---------- fixes ---------- */
+.about > * { min-width: 0; }
+.offers { align-items: start; }
+.brands .bi { color: #fff; }
+.brands .bi--map { color: #4285f4; }
+@media (max-width: 600px) {
+  .brands { gap: 9px; }
+  .brands .bi { width: 48px; height: 48px; }
+  .brands .bi svg { width: 23px; height: 23px; }
+  .brands--sm .bi { width: 42px; height: 42px; }
+  .brands--sm .bi svg { width: 20px; height: 20px; }
+}
+
+img { height: auto; }

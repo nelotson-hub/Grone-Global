@@ -1,6 +1,8 @@
 # Clymax Signature Hotel & Suites website
 
-A static, responsive one-page site: `index.html`, `privacy.html` and `terms.html`, with images in `img/` and the design kit in `assets/`. It needs no build step.
+Static site: `index.html`, `faq.html`, `privacy.html`, `terms.html`, with `css/`, `js/`, `img/` (WebP) and `media/` (silent MP4 clips). `subscribe.php` saves newsletter signups to `data/subscribers.csv` (blocked from the web).
+
+Live (temporary Hostinger address): https://rhythmic-bisque-mongoose-69.hostingersite.com
 
 ## Preview locally
 
@@ -8,20 +10,13 @@ A static, responsive one-page site: `index.html`, `privacy.html` and `terms.html
 python3 -m http.server 8080
 ```
 
-Then open http://localhost:8080.
+## Contact details
 
-## Still needed from the hotel
+WhatsApp number and Facebook URL are set at the top of `js/site.js` and written into `index.html` and `faq.html`. Every booking path (booking bar, Book this room, Book now, reservation form, contact form, floating button) opens WhatsApp to +234 707 336 9981 with a ready-made message.
 
-Search `index.html` for `data-assumed` to find every assumed value.
+## Still to supply
 
-| What | Where it goes | Now |
-|---|---|---|
-| WhatsApp number | every `https://wa.me/` link: add the number in international format, e.g. `https://wa.me/234XXXXXXXXXX?text=...` | the links open WhatsApp with the message ready, but no contact is filled in |
-| Facebook page URL | `.socials` in the footer | a Facebook search for the hotel name |
-| Booking email or form service | `action` and `data-endpoint` on the booking and newsletter forms | `bookings@clymaxsignature.example` placeholder |
-| Street and area | Getting here section and footer | left out |
-| Room names and prices | room tiles, nav panel, booking select, closing line | assumed names and ₦ prices |
-| Opening times | pool, lounges, grill, check-in and check-out | assumed |
-| Photos of the pool, outside lounge, inside lounge and Climax Grill | `#house` section (replaces the entrance film) | not yet supplied |
-| A sharp photo of the lit entrance sign | `img/entrance-sign.webp` | a frame from the 640x360 video |
-| Domain | `<link rel="canonical">` in the head | commented out |
+- Real room names and prices (the ₦65,000–₦160,000 rates are stand-ins)
+- Photos of the pool, the outside and inside lounges, the restaurant and the Climax Grill
+- The original, full-resolution header video (the current one is upscaled from 640×360)
+- A custom domain, if wanted
