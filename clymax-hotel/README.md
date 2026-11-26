@@ -1,6 +1,6 @@
 # Clymax Signature Hotel & Suites website
 
-Static site: `index.html`, `rooms.html`, `faq.html`, `privacy.html`, `terms.html`, with `css/`, `js/`, `img/` (WebP) and `media/` (silent MP4 clips). `subscribe.php` saves newsletter signups to `data/subscribers.csv` (blocked from the web).
+Static site: `index.html`, `rooms.html`, `gallery.html`, `faq.html`, `privacy.html`, `terms.html`, with `css/`, `js/`, `img/` (WebP) and `media/` (silent MP4 clips). `subscribe.php` saves newsletter signups to `data/subscribers.csv` (blocked from the web).
 
 Live (temporary Hostinger address): https://rhythmic-bisque-mongoose-69.hostingersite.com
 
@@ -23,4 +23,4 @@ WhatsApp number and Facebook URL are set at the top of `js/site.js` and written 
 
 ## Editing
 
-The three main pages share one header, menu and footer. Edit `tools/build.py` (rooms, prices, offers, FAQ answers, contact details) and run `python3 tools/build.py` from this folder to rebuild `index.html`, `rooms.html` and `faq.html`.
+The three main pages share one header, menu and footer. Edit `tools/build.py` (rooms, prices, offers, FAQ answers, contact details) and run `python3 tools/build.py` from this folder to rebuild `index.html`, `rooms.html`, `gallery.html` and `faq.html`. Each build tags every local file with `?v=`, so browsers always load the matching styles and photos.

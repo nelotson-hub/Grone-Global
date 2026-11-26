@@ -1,7 +1,8 @@
 """Builds index.html, rooms.html and faq.html from one set of parts.
 Run from the clymax-hotel folder:  python3 tools/build.py
 """
-import json, os
+import json, os, re, time
+BUILD = time.strftime('%Y%m%d%H%M')
 from urllib.parse import quote
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -26,15 +27,15 @@ ROOMS = [
     ('Signature suite', 'room-suite', '₦135,000', 'Gold bench at the foot of the bed and a lounge chair', ['2 guests', 'King bed', 'Lounge corner']),
     ('Royal suite', 'room-royal', '₦160,000', 'Mood lighting, a sitting area and an amber bench', ['2 guests', 'King bed', 'Sitting area']),
 ]
-OFFERS = [
-    ('wifi', 'Free Wi-Fi', '24 hours', 'Free in every room, both lounges, the restaurant and by the pool. Ask the front desk for the password at check-in.'),
-    ('bolt', 'Uninterrupted power', 'Day and night', 'The power stays on around the clock, so air conditioning, lights, Wi-Fi and hot water keep running.'),
-    ('pool', 'Outdoor pool', '8:00 – 20:00', 'Hotel guests swim free, one guest per room. Visitors are welcome and pay at the outside lounge. Loungers at the poolside.'),
-    ('glass', 'Outside lounge', '9:00 – late', 'Beside the pool, for drinks and evenings in the open air. Open to hotel guests and visitors.'),
-    ('sofa', 'Inside lounge & restaurant', '9:00 – late', 'An air-conditioned lounge joined to the restaurant, for meals, drinks and meeting friends or colleagues.'),
-    ('flame', 'Climax Grill', 'Breakfast daily', 'Breakfast every morning, with grills and local dishes through the day, in the restaurant or by the pool.'),
-    ('shield', 'Security & parking', 'Gated, guarded', 'Park on the gated forecourt in front of the hotel. Guards are on duty day and night.'),
-    ('plane', 'Airport pickup', 'On request', 'Tick airport pickup when you book and send your flight number. A driver meets you at arrivals, and the front desk confirms the price with your room.'),
+OFFERS = [  # icon, name, meta, note, picture (None: icon panel until a real photo is supplied)
+    ('wifi', 'Free Wi-Fi', '24 hours', 'Free in every room, both lounges, the restaurant and by the pool. Ask the front desk for the password at check-in.', 'g-desk'),
+    ('bolt', 'Uninterrupted power', 'Day and night', 'The power stays on around the clock, so air conditioning, lights, Wi-Fi and hot water keep running.', 'g-ringlight'),
+    ('pool', 'Outdoor pool', '8:00 – 20:00', 'Hotel guests swim free, one guest per room. Visitors are welcome and pay at the outside lounge. Loungers at the poolside.', None),
+    ('glass', 'Outside lounge', '9:00 – late', 'Beside the pool, for drinks and evenings in the open air. Open to hotel guests and visitors.', None),
+    ('sofa', 'Inside lounge & restaurant', '9:00 – late', 'An air-conditioned lounge joined to the restaurant, for meals, drinks and meeting friends or colleagues.', None),
+    ('flame', 'Climax Grill', 'Breakfast daily', 'Breakfast every morning, with grills and local dishes through the day, in the restaurant or by the pool.', None),
+    ('shield', 'Security & parking', 'Gated, guarded', 'Park on the gated forecourt in front of the hotel. Guards are on duty day and night.', 'exterior'),
+    ('plane', 'Airport pickup', 'On request', 'Tick airport pickup when you book and send your flight number. A driver meets you at arrivals, and the front desk confirms the price with your room.', None),
 ]
 TOURS = [('Classic room', 'classic'), ('Deluxe room', 'deluxe'), ('Premier room', 'premier'), ('Executive room', 'executive'), ('Royal suite', 'royal')]
 GALLERY = [
@@ -98,8 +99,8 @@ ICONS = ''.join([
     sym('card', f'<g {S}><rect x="3" y="5.5" width="18" height="13" rx="2"/><path d="M3 10h18M7 15h3"/></g>'),
 ] + [f'<symbol id="b-{n}" viewBox="0 0 24 24"><path fill="currentColor" d="{p}"/></symbol>' for n, p in BRAND.items()])
 
-def i(n, cls=''): return f'<svg{f" class=\"{cls}\"" if cls else ""} aria-hidden="true"><use href="#i-{n}"/></svg>'
-def b(n): return f'<svg aria-hidden="true"><use href="#b-{n}"/></svg>'
+def i(n, cls=''): return f'<svg{f" class=\"{cls}\"" if cls else ""} width="18" height="18" aria-hidden="true"><use href="#i-{n}"/></svg>'
+def b(n): return f'<svg width="18" height="18" aria-hidden="true"><use href="#b-{n}"/></svg>'
 
 def socials(cls='socials'):
     return f'''<div class="{cls}">
@@ -187,7 +188,7 @@ def drawer(page):
       <p class="drawer__label">Photos &amp; videos</p>
       <ul class="drawer__links">
         <li><a class="gold" href="{h}#tours" data-close>{i('play')}Walk through the rooms</a></li>
-        <li><a class="gold" href="{h}#gallery" data-close>{i('image')}Hotel gallery</a></li>
+        <li><a class="gold" href="gallery.html"{cur('gallery')}>{i('image')}Hotel gallery</a></li>
       </ul>
     </div>
     <div class="drawer__group">
@@ -234,7 +235,7 @@ def footer(page):
           </ul>
         </div>
         <div><h3>Explore</h3><ul class="links">
-          <li><a href="{h}#about">About us</a></li><li><a href="rooms.html">Rooms &amp; suites</a></li><li><a href="{h}#offer">What we offer</a></li><li><a href="faq.html">FAQs</a></li><li><a href="{h}#reserve">Reservations</a></li><li><a href="{h}#contact">Contact us</a></li></ul></div>
+          <li><a href="{h}#about">About us</a></li><li><a href="rooms.html">Rooms &amp; suites</a></li><li><a href="{h}#offer">What we offer</a></li><li><a href="gallery.html">Gallery</a></li><li><a href="faq.html">FAQs</a></li><li><a href="{h}#reserve">Reservations</a></li><li><a href="{h}#contact">Contact us</a></li></ul></div>
         <div><h3>Direct reservations</h3>
           <ul class="info" style="margin-top:0">
             <li>{i('phone')}<a href="tel:+{WA_NUM}">{PHONE}</a></li>
@@ -259,14 +260,21 @@ GUEST_OPTS = ''.join(f'<option{" selected" if g == "2 adults" else ""}>{g}</opti
 ROOM_OPTS = ''.join(f'<option>{r[0]}</option>' for r in ROOMS)
 
 def index():
-    offers = '\n'.join(f'''        <article class="offer">
-          <div class="offer__top"><span class="offer__ic">{i(ic)}</span><h3>{t.replace('&', '&amp;')}</h3></div>
-          <p class="offer__meta">{m}</p>
-          <p class="offer__more" id="om{k}" hidden>{more}</p>
-          <button class="offer__btn" type="button" aria-expanded="false" aria-controls="om{k}"><span>More</span>{i('plus')}</button>
-        </article>''' for k, (ic, t, m, more) in enumerate(OFFERS))
+    def svc_img(ic, pic, t):
+        if pic:
+            return f'<div class="svc__img"><img src="img/{pic}.webp" alt="{t}" width="800" height="600" loading="lazy"></div>'
+        return f'<div class="svc__img svc__img--ic" aria-hidden="true">{i(ic)}</div>'
+    offers = '\n'.join(f'''        <article class="svc">
+          {svc_img(ic, pic, t.replace('&', '&amp;'))}
+          <div class="svc__body">
+            <h3>{t.replace('&', '&amp;')}</h3>
+            <p class="svc__meta">{m}</p>
+            <button class="svc__btn" type="button" aria-expanded="false" aria-controls="sv{k}"><span>See more</span>{i('plus')}</button>
+            <p class="svc__more" id="sv{k}" hidden>{more}</p>
+          </div>
+        </article>''' for k, (ic, t, m, more, pic) in enumerate(OFFERS))
     tours = '\n'.join(f'''        <figure class="tour"><video muted loop playsinline preload="none" poster="media/tour-{k}-poster.webp" data-src="media/tour-{k}.mp4" aria-label="Video of the {n}" disablepictureinpicture></video><figcaption>{n}</figcaption></figure>''' for n, k in TOURS)
-    gallery = '\n'.join(f'''        <button{f' class="{c}"' if c else ''} type="button"><img src="img/{f}.webp" alt="{a}" width="{w}" height="{hh}" loading="lazy"></button>''' for c, f, a, w, hh in GALLERY)
+    _unused = '\n'.join(f'''        <button{f' class="{c}"' if c else ''} type="button"><img src="img/{f}.webp" alt="{a}" width="{w}" height="{hh}" loading="lazy"></button>''' for c, f, a, w, hh in GALLERY)
     main = f'''
 <main id="main">
   <section class="hero" id="top">
@@ -275,7 +283,7 @@ def index():
       <source src="media/hero.mp4" type="video/mp4">
     </video>
     <h1 class="sr-only">Clymax Signature Hotel &amp; Suites, Okpanam Road, Asaba</h1>
-    <img class="hero__seal" src="img/mark-180.webp" alt="Clymax Signature Hotel &amp; Suites" width="180" height="180">
+    <img class="hero__seal" id="hero-seal" src="img/mark-180.webp" alt="Clymax Signature Hotel &amp; Suites" width="180" height="180">
   </section>
 
   <div class="bookband">
@@ -331,15 +339,6 @@ def index():
       <div class="head head--center"><h2>What we offer</h2><p>Everything you need without leaving the hotel.</p></div>
       <div class="offers">
 {offers}
-      </div>
-    </div>
-  </section>
-
-  <section class="sec sec--ivory" id="gallery">
-    <div class="wrap">
-      <div class="head head--row"><h2>Gallery</h2><p>Tap any photo to see it larger.</p></div>
-      <div class="gallery">
-{gallery}
       </div>
     </div>
   </section>
@@ -453,6 +452,27 @@ def faq():
                 'Check-in and check-out times, airport pickup, payment, breakfast, pool, parking, Wi-Fi and power at Clymax Signature Hotel & Suites, Asaba.') \
         + nav(False) + drawer('faq') + main + footer('faq')
 
-for name, fn in [('index.html', index), ('rooms.html', rooms), ('faq.html', faq)]:
-    open(os.path.join(ROOT, name), 'w').write(fn())
+
+def gallery():
+    tiles = '\n'.join(f'''        <button{f' class="{c}"' if c else ''} type="button"><img src="img/{f}.webp" alt="{a}" width="{w}" height="{hh}" loading="lazy"></button>''' for c, f, a, w, hh in GALLERY)
+    main = f'''
+<main id="main">
+  <section class="sec sec--ivory page-top" id="top">
+    <div class="wrap">
+      <div class="head"><h1 style="font-size:var(--t-h2)">Gallery</h1><p>Rooms and details from around the hotel. Tap any photo to see it larger.</p></div>
+      <div class="gallery">
+{tiles}
+      </div>
+      <p style="margin-top:24px;display:flex;flex-wrap:wrap;gap:10px 20px;align-items:center"><a class="btn" href="rooms.html">See the rooms{i('arrow')}</a><a class="textlink" href="index.html#tours">Watch the room tours{i('arrow')}</a></p>
+    </div>
+  </section>
+</main>
+'''
+    return head('Gallery | Clymax Signature Hotel &amp; Suites, Asaba',
+                'Photos of the rooms, suites and details at Clymax Signature Hotel & Suites, Asaba.') \
+        + nav(False) + drawer('gallery') + main + footer('gallery')
+
+for name, fn in [('index.html', index), ('rooms.html', rooms), ('faq.html', faq), ('gallery.html', gallery)]:
+    html = re.sub(r'((?:src|href|poster|data-src|srcset)=")((?:img|media|css|js)/[^"?\s]+)"', lambda m: f'{m.group(1)}{m.group(2)}?v={BUILD}"', fn())
+    open(os.path.join(ROOT, name), 'w').write(html)
     print('wrote', name)

@@ -387,3 +387,33 @@ input, textarea, select { caret-color: var(--gold-deep); accent-color: var(--gol
 /* floating WhatsApp waits until the booking bar has scrolled away */
 .has-hero .wa { opacity: 0; transform: translateY(12px); pointer-events: none; transition: opacity .35s var(--ease), transform .35s var(--ease); }
 .has-hero.show-wa .wa { opacity: 1; transform: none; pointer-events: auto; }
+
+/* ---------- hero seal: shows on load, fades once the film plays ---------- */
+.hero__seal { transition: opacity 1.1s var(--ease), transform 1.1s var(--ease); }
+.hero__seal.is-gone { opacity: 0; transform: scale(.94); }
+
+/* ---------- What we offer: picture cards, note behind See more ---------- */
+.svc { display: flex; flex-direction: column; background: #fff; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; transition: box-shadow .3s, border-color .3s; }
+.svc:hover { border-color: rgb(133 102 58 / .4); box-shadow: 0 14px 26px -20px rgb(23 21 15 / .45); }
+.svc__img { aspect-ratio: 4 / 3; overflow: hidden; background: var(--sand); }
+.svc__img img { width: 100%; height: 100%; object-fit: cover; }
+.svc__img--ic { display: grid; place-items: center; background: radial-gradient(circle at 50% 40%, #2c261d, #16130e 75%); color: var(--gold); }
+.svc__img--ic svg { width: 34px; height: 34px; }
+.svc__body { display: grid; gap: 3px; padding: 9px 10px 10px; }
+.svc h3 { font: 500 13.5px/1.25 var(--f-text); }
+.svc__meta { font-size: 11.5px; color: var(--gold-deep); }
+.svc__btn { justify-self: start; display: inline-flex; align-items: center; gap: 4px; height: 26px; margin-top: 4px; padding: 0 9px; border-radius: 999px; border: 1px solid var(--line); background: var(--paper); font: 500 11.5px/1 var(--f-text); color: var(--ink); cursor: pointer; }
+.svc__btn:hover { border-color: var(--gold-deep); color: var(--gold-deep); }
+.svc__btn svg { width: 11px; height: 11px; transition: transform .3s var(--ease); }
+.svc__btn[aria-expanded="true"] svg { transform: rotate(45deg); }
+.svc__more { font-size: 12.5px; line-height: 1.5; color: var(--stone); padding-top: 4px; }
+.svc__more[hidden] { display: none; }
+@media (min-width: 900px) { .svc__body { padding: 14px 16px 16px; gap: 5px; } .svc h3 { font-size: 15.5px; } .svc__meta { font-size: 13px; } .svc__more { font-size: 14px; } .svc__img--ic svg { width: 44px; height: 44px; } }
+
+/* ---------- small social icons everywhere ---------- */
+.si { width: 34px; height: 34px; }
+.si svg { width: 16px; height: 16px; }
+.socials { gap: 7px; }
+.socials--sm .si { width: 32px; height: 32px; }
+.socials--sm .si svg { width: 15px; height: 15px; }
+.info svg { width: 16px; height: 16px; }

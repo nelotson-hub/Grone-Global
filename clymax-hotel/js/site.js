@@ -57,6 +57,12 @@
     hero.muted = true;
     if (reduce || saveData) { hero.removeAttribute('autoplay'); hero.pause(); }
     else { const p = hero.play(); if (p) p.catch(() => {}); }
+    // the CSH seal greets on load, then steps aside so it never clashes with the sign in the film
+    const seal = $('#hero-seal');
+    if (seal && !reduce && !saveData) {
+      const hide = () => setTimeout(() => seal.classList.add('is-gone'), 1400);
+      if (!hero.paused && hero.currentTime > 0) hide(); else hero.addEventListener('playing', hide, { once: true });
+    }
   }
 
   // ── room tours: load and play only while on screen, muted, no controls ──
@@ -115,12 +121,12 @@
     });
   }
 
-  // ── What we offer: More ──
-  $$('.offer__btn').forEach(b => b.addEventListener('click', () => {
-    const open = b.getAttribute('aria-expanded') !== 'true';
-    b.setAttribute('aria-expanded', String(open));
-    document.getElementById(b.getAttribute('aria-controls')).hidden = !open;
-    $('span', b).textContent = open ? 'Less' : 'More';
+  // ── What we offer: See more ──
+  $$('.svc__btn').forEach(btn => btn.addEventListener('click', () => {
+    const open = btn.getAttribute('aria-expanded') !== 'true';
+    btn.setAttribute('aria-expanded', String(open));
+    document.getElementById(btn.getAttribute('aria-controls')).hidden = !open;
+    $('span', btn).textContent = open ? 'See less' : 'See more';
   }));
 
   // ── forms → WhatsApp ──
