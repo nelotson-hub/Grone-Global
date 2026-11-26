@@ -1,0 +1,7 @@
+[
+  {"check": "container-edges", "target": "a.wa-float", "reason": "The client asked for a WhatsApp button on every screen; it is desktop only and the phone uses the action bar."},
+  {"check": "card-layout", "target": "section#rooms", "reason": "Four room tiles in one row is the place rooms recipe (sections.md, Rooms: row of four on span-3)."},
+  {"check": "card-family", "target": "section#faq", "reason": "FAQ questions are h3 rows in the text face per the faq recipe, not cards; the display face belongs to section h2s."},
+  {"check": "copy-headings", "target": "Is the airport pickup", "reason": "FAQ entries may be questions (copy.md, Section headings); these are the questions guests ask."},
+  {"check": "photo-upscale", "target": "entrance-sign.webp", "reason": "The client's only frame of the lit entrance sign comes from a 640x360 video; a full-size photograph is requested from the client."}
+]
