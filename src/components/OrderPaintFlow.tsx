@@ -325,7 +325,7 @@ export const OrderPaintFlow: React.FC<OrderPaintFlowProps> = ({
                     01. Choose What You Want to Order
                   </h2>
                   <p className="text-xs text-slate-500 mt-0.5">
-                    Select <strong>Order Paint</strong> (Emulsion, Matte, Silk, Oil) or{' '}
+                    Select <strong>Order Paint</strong> (Emulsion, Acrylic, Silk, Oil) or{' '}
                     <strong>Order Screeding &amp; Putty</strong> in 4-Litre or 20-Litre plastic buckets.
                   </p>
                 </div>

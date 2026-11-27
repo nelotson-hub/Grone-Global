@@ -3,7 +3,6 @@ import {
   PaintBucket,
   Building2,
   ShieldCheck,
-  RefreshCw,
   Menu,
   X,
   Home,
@@ -20,9 +19,11 @@ import {
   PaintTypeKey,
   BRAND_LOGO_URL,
   IMAGES,
+  PAINTS_SECTION_LINKS,
 } from './data/groneData';
 import { buildWhatsAppUrl } from './config/contactConfig';
-import { PaintsHomeView, ContractingHomeView } from './components/HomePortalViews';
+import { ContractingHomeView } from './components/HomePortalViews';
+import { PaintsHomeView } from './components/PaintsHomeView';
 import { AboutView, ServicesView } from './components/AboutAndServicesViews';
 import { OrderPaintFlow } from './components/OrderPaintFlow';
 import {
@@ -41,6 +42,17 @@ export default function App() {
   const [isReloadingHome, setIsReloadingHome] = useState<boolean>(false);
   const [homeKey, setHomeKey] = useState<number>(1);
   const [drawerOpen, setDrawerOpen] = useState<boolean>(false);
+
+  const [scrolled, setScrolled] = useState<boolean>(false);
+  const isPaintsHome = activeView === 'home' && subdivision === 'paints';
+
+  // The header floats transparently over the Paints hero, then turns solid once the page scrolls.
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 40);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
 
   const drawerRef = useRef<HTMLDivElement | null>(null);
   const hamburgerBtnRef = useRef<HTMLButtonElement | null>(null);
@@ -141,6 +153,21 @@ export default function App() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, []);
 
+  const goToPaintsSection = useCallback(
+    (id: string) => {
+      setDrawerOpen(false);
+      const scroll = () => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+      if (isPaintsHome) {
+        scroll();
+        return;
+      }
+      setSubdivision('paints');
+      setActiveView('home');
+      window.setTimeout(scroll, 100); // wait for the Paints homepage to render
+    },
+    [isPaintsHome]
+  );
+
   const handleTriggerConfirmation = useCallback((redirectHome = false) => {
     setConfirmationAutoRedirect(redirectHome);
     setConfirmationModalOpen(true);
@@ -160,105 +187,74 @@ export default function App() {
 
   return (
     <div className="min-h-screen flex flex-col bg-[#FAF8F5] text-slate-900 overflow-x-hidden">
-      {/* TOP BAR WITH DESKTOP, TABLET & MOBILE HAMBURGER BUTTON */}
-      <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-xs border-b border-stone-200">
-        <div className="max-w-7xl mx-auto flex items-center justify-between gap-4 lg:gap-8 px-4 sm:px-6 lg:px-8 py-3 sm:py-3.5">
-          {/* Zone 1: Brand logo & wordmark */}
+      {/* 3-POINT HEADER: logo · division switcher · menu. Floats over the Paints hero, solid elsewhere. */}
+      <header
+        className={`${isPaintsHome ? 'fixed' : 'sticky'} top-0 inset-x-0 z-40 transition-colors duration-300 ${
+          isPaintsHome && !scrolled
+            ? 'bg-gradient-to-b from-[#0F172A]/85 via-[#0F172A]/40 to-transparent'
+            : 'bg-[#0F172A]/95 backdrop-blur shadow-lg'
+        }`}
+      >
+        <div className="max-w-7xl mx-auto flex items-center justify-between gap-2 sm:gap-4 px-3 sm:px-6 lg:px-8 py-3">
           <a
             href="#home"
             onClick={(e) => {
               e.preventDefault();
               handleHomeClick();
             }}
-            className="inline-flex items-center gap-2.5 sm:gap-3 shrink-0 group"
+            className="inline-flex items-center gap-2.5 shrink-0"
           >
             <img
               src={BRAND_LOGO_URL}
-              alt="Grone Global Ltd Logo"
-              className="h-9 w-9 sm:h-10 sm:w-10 rounded-lg object-contain bg-white border border-stone-200/80 p-0.5 shrink-0"
+              alt="Grone Global Ltd"
+              className="h-9 w-9 sm:h-10 sm:w-10 rounded-lg object-contain bg-white p-0.5 shrink-0"
             />
-            <span className="text-base sm:text-lg font-extrabold tracking-tight text-slate-900 whitespace-nowrap group-hover:text-amber-800 transition-colors">
+            <span className="hidden lg:inline text-base font-extrabold tracking-tight text-white whitespace-nowrap">
               Grone Global Ltd
             </span>
           </a>
 
-          {/* Zone 2: Clean single-line text navigation links */}
-          <nav className="hidden md:flex items-center gap-5 lg:gap-7 text-sm font-medium text-slate-600">
-            <a
-              href="#home"
-              onClick={(e) => {
-                e.preventDefault();
-                handleHomeClick();
-              }}
-              className={`hover:text-slate-900 transition-colors whitespace-nowrap shrink-0 underline-offset-8 ${
-                activeView === 'home' ? 'text-slate-900 font-bold underline decoration-amber-700 decoration-2' : ''
-              }`}
-            >
-              Home
-            </a>
-            <a
-              href="#about"
-              onClick={(e) => {
-                e.preventDefault();
-                handleNavigate('about');
-              }}
-              className={`hover:text-slate-900 transition-colors whitespace-nowrap shrink-0 underline-offset-8 ${
-                activeView === 'about' ? 'text-slate-900 font-bold underline decoration-amber-700 decoration-2' : ''
-              }`}
-            >
-              About
-            </a>
-            <a
-              href="#services"
-              onClick={(e) => {
-                e.preventDefault();
-                handleNavigate('services');
-              }}
-              className={`hover:text-slate-900 transition-colors whitespace-nowrap shrink-0 underline-offset-8 ${
-                activeView === 'services' ? 'text-slate-900 font-bold underline decoration-amber-700 decoration-2' : ''
-              }`}
-            >
-              Services
-            </a>
-            <a
-              href="#order-paint"
-              onClick={(e) => {
-                e.preventDefault();
-                handleNavigate('order');
-              }}
-              className={`hover:text-slate-900 transition-colors whitespace-nowrap shrink-0 underline-offset-8 ${
-                activeView === 'order' ? 'text-amber-700 font-bold underline decoration-amber-700 decoration-2' : ''
-              }`}
-            >
-              Order Now
-            </a>
-          </nav>
-
-          {/* Zone 3: Contact Us + Desktop/Tablet/Mobile Hamburger Button */}
-          <div className="flex items-center gap-2 sm:gap-3 shrink-0">
+          <div
+            role="group"
+            aria-label="Choose division"
+            className="flex items-center p-1 rounded-full bg-white/10 border border-white/20 backdrop-blur-sm min-w-0"
+          >
             <button
               type="button"
-              onClick={() => handleOpenContactModal('Navbar Contact Us Inquiry')}
-              className="px-3.5 sm:px-4 py-2 text-xs font-bold text-white bg-slate-900 rounded-lg hover:bg-slate-800 transition-colors cursor-pointer whitespace-nowrap shrink-0"
+              aria-pressed={subdivision === 'paints'}
+              onClick={() => handleSwitchSubdivision('paints')}
+              className={`inline-flex items-center gap-1.5 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-[11px] sm:text-xs font-bold whitespace-nowrap transition-colors cursor-pointer ${
+                subdivision === 'paints' ? 'bg-[#D97706] text-white' : 'text-slate-200 hover:text-white'
+              }`}
             >
-              Contact Us
+              <PaintBucket className="w-3.5 h-3.5 shrink-0" />
+              <span className="sm:hidden">Paints</span>
+              <span className="hidden sm:inline">Grone Global Paints</span>
             </button>
-
             <button
-              ref={hamburgerBtnRef}
               type="button"
-              onClick={() => setDrawerOpen((prev) => !prev)}
-              aria-label={drawerOpen ? 'Close navigation menu' : 'Open navigation menu'}
-              aria-expanded={drawerOpen}
-              className={`inline-flex items-center justify-center p-2 rounded-lg border transition-colors cursor-pointer shrink-0 ${
-                drawerOpen
-                  ? 'bg-slate-900 text-white border-slate-900'
-                  : 'bg-stone-100 text-slate-800 border-stone-300 hover:bg-stone-200'
+              aria-pressed={subdivision === 'contracting'}
+              onClick={() => handleSwitchSubdivision('contracting')}
+              className={`inline-flex items-center gap-1.5 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-[11px] sm:text-xs font-bold whitespace-nowrap transition-colors cursor-pointer ${
+                subdivision === 'contracting' ? 'bg-[#D97706] text-white' : 'text-slate-200 hover:text-white'
               }`}
             >
-              {drawerOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+              <Building2 className="w-3.5 h-3.5 shrink-0" />
+              <span className="sm:hidden">Contracting</span>
+              <span className="hidden sm:inline">General Contracting &amp; Procurement</span>
             </button>
           </div>
+
+          <button
+            ref={hamburgerBtnRef}
+            type="button"
+            onClick={() => setDrawerOpen((prev) => !prev)}
+            aria-label={drawerOpen ? 'Close navigation menu' : 'Open navigation menu'}
+            aria-expanded={drawerOpen}
+            className="inline-flex items-center justify-center p-2 rounded-lg border border-white/30 text-white hover:bg-white/10 transition-colors cursor-pointer shrink-0"
+          >
+            {drawerOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+          </button>
         </div>
       </header>
 
@@ -306,6 +302,21 @@ export default function App() {
         <div className="flex-1 overflow-y-auto modal-scrollbar p-4 flex flex-col justify-between gap-6">
           <div className="flex flex-col space-y-1.5">
             <p className="px-3 text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1">
+              Grone Global Paints
+            </p>
+            {PAINTS_SECTION_LINKS.map((link) => (
+              <button
+                key={link.id}
+                type="button"
+                onClick={() => goToPaintsSection(link.id)}
+                className="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-sm font-semibold text-left text-slate-700 hover:bg-stone-100 hover:text-slate-900 transition-colors cursor-pointer"
+              >
+                <PaintBucket className="w-4 h-4 shrink-0 text-[#0D9488]" />
+                <span>{link.label}</span>
+              </button>
+            ))}
+
+            <p className="px-3 pt-4 text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1">
               Main Pages
             </p>
 
@@ -426,62 +437,6 @@ export default function App() {
         </div>
       </aside>
 
-      {/* 2-IN-1 CORPORATE SUBDIVISION PORTAL SWITCHER & INSTALLMENTAL PAYMENT BAR */}
-      <div className="bg-slate-900 text-white border-b border-slate-800">
-        <div className="max-w-7xl mx-auto px-3.5 sm:px-6 lg:px-8 py-2 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-2">
-          <div className="flex flex-col sm:flex-row sm:items-center gap-2 min-w-0">
-            <span className="text-xs text-slate-400 hidden xl:inline shrink-0">
-              Active Subdivision Portal:
-            </span>
-            <div className="grid grid-cols-2 sm:flex sm:flex-row items-stretch sm:items-center gap-1 p-1 bg-slate-950 border border-slate-800 rounded-lg w-full sm:w-auto">
-              <button
-                type="button"
-                onClick={() => handleSwitchSubdivision('paints')}
-                className={`inline-flex items-center justify-center sm:justify-start gap-1.5 px-2.5 sm:px-3 py-1.5 text-[11px] sm:text-xs font-bold rounded-md transition-colors cursor-pointer sm:whitespace-nowrap ${
-                  subdivision === 'paints'
-                    ? 'bg-amber-600 text-white'
-                    : 'text-slate-300 hover:text-white'
-                }`}
-              >
-                <PaintBucket className="w-3.5 h-3.5 shrink-0" />
-                <span className="truncate">Grone Global Paints</span>
-              </button>
-
-              <button
-                type="button"
-                onClick={() => handleSwitchSubdivision('contracting')}
-                className={`inline-flex items-center justify-center sm:justify-start gap-1.5 px-2.5 sm:px-3 py-1.5 text-[11px] sm:text-xs font-bold rounded-md transition-colors cursor-pointer sm:whitespace-nowrap ${
-                  subdivision === 'contracting'
-                    ? 'bg-amber-600 text-white'
-                    : 'text-slate-300 hover:text-white'
-                }`}
-              >
-                <Building2 className="w-3.5 h-3.5 shrink-0" />
-                <span className="truncate sm:hidden">General Contracting</span>
-                <span className="hidden sm:inline">Grone Global Ltd General Contracting Subdivision</span>
-              </button>
-            </div>
-          </div>
-
-          <div className="flex items-center justify-between sm:justify-end gap-2 shrink-0">
-            {isReloadingHome && (
-              <span className="inline-flex items-center gap-1.5 text-xs font-mono text-amber-400">
-                <RefreshCw className="w-3.5 h-3.5 animate-spin" />
-                Refreshing...
-              </span>
-            )}
-            <button
-              type="button"
-              onClick={() => setInstallmentModalOpen(true)}
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-3 py-1.5 text-[11px] sm:text-xs font-bold text-slate-950 bg-amber-400 hover:bg-amber-300 rounded-lg transition-colors cursor-pointer whitespace-nowrap shrink-0"
-            >
-              <ShieldCheck className="w-3.5 h-3.5" />
-              Installmental Payment
-            </button>
-          </div>
-        </div>
-      </div>
-
       {/* MAIN PORTAL VIEWPORT */}
       <main
         key={homeKey}
@@ -490,13 +445,7 @@ export default function App() {
         }`}
       >
         {activeView === 'home' && subdivision === 'paints' && (
-          <PaintsHomeView
-            onOrderPaint={handleOrderPaintWithFinish}
-            onOpenInstallment={() => setInstallmentModalOpen(true)}
-            onExploreServices={() => handleNavigate('services')}
-            onSwitchToContracting={() => handleSwitchSubdivision('contracting')}
-            onOpenContact={handleOpenContactModal}
-          />
+          <PaintsHomeView onOrderPaint={handleOrderPaintWithFinish} />
         )}
 
         {activeView === 'home' && subdivision === 'contracting' && (
@@ -543,6 +492,7 @@ export default function App() {
         onOpenContact={handleOpenContactModal}
         onOpenLegal={(type) => setLegalModalType(type)}
         onOpenInstallment={() => setInstallmentModalOpen(true)}
+        onGoToPaintsSection={goToPaintsSection}
       />
 
       {/* FLOATING WHATSAPP QUICK-CHAT BUTTON (BOTTOM-RIGHT CORNER) */}

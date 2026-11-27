@@ -102,7 +102,7 @@ export const AboutView: React.FC<AboutViewProps> = ({
               Grone Global Paints · Laboratory &amp; Quality Assurance
             </p>
             <p className="text-[11px] sm:text-xs text-stone-300 mt-0.5">
-              Batch-tested Emulsion, Matte, Silk, Oil coatings &amp; Acrylic Screeding Putty formulation.
+              Batch-tested Emulsion, Acrylic, Silk, Oil coatings &amp; Acrylic Screeding Putty formulation.
             </p>
           </div>
         </div>
@@ -116,7 +116,7 @@ export const AboutView: React.FC<AboutViewProps> = ({
             45,000+ L
           </p>
           <p className="text-[11px] sm:text-xs text-slate-600 mt-1.5 leading-snug">
-            Emulsion, Matte, Silk, Alkyd Oil &amp; Acrylic Screeding Putty.
+            Emulsion, Acrylic, Silk, Alkyd Oil &amp; Acrylic Screeding Putty.
           </p>
         </div>
 
@@ -170,7 +170,7 @@ export const AboutView: React.FC<AboutViewProps> = ({
               humidity.
             </p>
             <ul className="space-y-1.5 text-xs text-slate-700">
-              <li>01. Direct retail and bulk supply of Emulsion, Matte, Silk, and Oil paints in 4L and 20L plastic buckets.</li>
+              <li>01. Direct retail and bulk supply of Emulsion, Acrylic, Silk, and Oil paints in 4L and 20L plastic buckets.</li>
               <li>02. Industrial Screeding &amp; Putty production for ultra-smooth interior and exterior wall preparation.</li>
               <li>03. White-label contract paint production, contract painting execution, and paint &amp; putty production tutorials.</li>
             </ul>

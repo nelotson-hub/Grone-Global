@@ -1604,7 +1604,7 @@ export const LegalModal: React.FC<LegalModalProps> = ({ type, onClose }) => {
                 <p className="mt-1">
                   All direct paint orders placed via the <strong>Grone Global Paints</strong> portal are settled
                   exclusively via corporate bank transfer to the designated <strong>Grone Global Ltd</strong> bank
-                  account and verified via receipt upload. Custom-tinted shades (Emulsion, Matte, Silk, or Oil Paint in
+                  account and verified via receipt upload. Custom-tinted shades (Emulsion, Acrylic, Silk, or Oil Paint in
                   4L or 20L plastic buckets) enter production immediately upon payment verification.
                 </p>
               </div>

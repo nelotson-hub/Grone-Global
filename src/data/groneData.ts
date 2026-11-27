@@ -10,15 +10,16 @@ import paintBucketsCollectionImg from '../assets/images/paint_buckets_with_logo_
 import paintersAtWorkImg from '../assets/images/commercial_painters_clean_1795526915535.webp';
 import paintLabFormulationImg from '../assets/images/paint_lab_african_team_1795515422915.webp';
 import screedingPuttyProductionImg from '../assets/images/screeding_bucket_logo_1795526917500.webp';
+import paintProductLineupImg from '../assets/images/grone_paint_product_lineup.webp';
 
 export type SubdivisionMode = 'paints' | 'contracting';
 export type NavView = 'home' | 'about' | 'services' | 'order';
-export type PaintTypeKey = 'emulsion' | 'matte' | 'silk' | 'oil' | 'screeding';
+export type PaintTypeKey = 'emulsion' | 'acrylic' | 'silk' | 'oil' | 'screeding';
 export type BucketSizeKey = '4L' | '20L';
 
 export const PAINT_ORDER_KEYS: PaintTypeKey[] = [
   'emulsion',
-  'matte',
+  'acrylic',
   'silk',
   'oil',
   'screeding',
@@ -90,6 +91,7 @@ export const IMAGES = {
   paintersAtWork: paintersAtWorkImg,
   paintLabFormulation: paintLabFormulationImg,
   screedingPuttyProduction: screedingPuttyProductionImg,
+  paintProductLineup: paintProductLineupImg,
 };
 
 export const PAINT_FINISHES: Record<PaintTypeKey, PaintFinishSpec> = {
@@ -105,29 +107,29 @@ export const PAINT_FINISHES: Record<PaintTypeKey, PaintFinishSpec> = {
     shortNote:
       'Water-based, fast-drying, low-odor wall paint suspended in acrylic emulsion resin. Breathable and cost-effective for covering large residential and estate masonry surfaces quickly.',
     prices: {
-      '4L': 8500,
-      '20L': 38000,
+      '4L': 3000,
+      '20L': 12500,
     },
     description:
       'Formulated by Grone Global Paints with high-titanium dioxide dispersion and acrylic copolymer binders for strong hiding power, easy roller flow, and reliable breathability in humid tropical climates.',
   },
-  matte: {
-    id: 'matte',
-    name: 'Matte Paint',
-    subtitle: 'Ultra-Low Sheen Dead-Flat Luxury Architectural Finish',
-    sheenLevel: 'True Dead-Flat Matte (<2–3% Gloss at 60°)',
-    coveragePerLitre: '12–14 m² per litre (2 coats)',
-    dryingTime: 'Touch dry in 40 mins · Recoat in 2–3 hours',
-    scrubResistance: '6,500+ wet scrub cycles · Non-chalking & wipeable resin',
-    applicationAreas: 'Luxury living rooms, bedrooms, ceilings, galleries, and walls with slight plaster imperfections',
+  acrylic: {
+    id: 'acrylic',
+    name: 'Acrylic Paint',
+    subtitle: 'Durable Water-Based Acrylic Wall Coating for Interior & Exterior',
+    sheenLevel: 'Smooth Low-Sheen Finish',
+    coveragePerLitre: '10–12 m² per litre (2 coats)',
+    dryingTime: 'Touch dry in 1 hour · Recoat in 2–3 hours',
+    scrubResistance: 'Washable · Weather & fade resistant',
+    applicationAreas: 'Exterior facades, fences, interior walls, offices, and high-humidity areas',
     shortNote:
-      'High-pigment, non-reflective velvet finish that absorbs light rather than bouncing glare. Expertly hides wall undulations, screeding touch-ups, and roller marks while delivering rich, deep color saturation.',
+      'Tough water-based acrylic coating with strong adhesion and colour retention. Stands up to rain, sun, and regular washing on both interior and exterior walls.',
     prices: {
-      '4L': 13500,
-      '20L': 58000,
+      '4L': 3500,
+      '20L': 15000,
     },
     description:
-      'Engineered by Grone Global Paints with micro-mineral flattening extenders and dense acrylic binders so it masks minor plaster unevenness effortlessly while remaining wipeable, UV-stable, and velvety smooth.',
+      'Made by Grone Global Paints with pure acrylic binders for lasting colour, good hiding power, and dependable protection in Nigeria’s hot, humid climate.',
   },
   silk: {
     id: 'silk',
@@ -141,8 +143,8 @@ export const PAINT_FINISHES: Record<PaintTypeKey, PaintFinishSpec> = {
     shortNote:
       'Smooth mid-sheen satin coating that reflects soft architectural light and forms a sealed, wipe-clean surface—ideal for busy corridors, kitchens, kids’ rooms, and commercial lobbies.',
     prices: {
-      '4L': 16500,
-      '20L': 72000,
+      '4L': 20000,
+      '20L': 70000,
     },
     description:
       'Engineered with pure cross-linking acrylic emulsion that reflects natural architectural light while allowing effortless wipe-down of stains, scuff marks, and tropical dust.',
@@ -159,8 +161,8 @@ export const PAINT_FINISHES: Record<PaintTypeKey, PaintFinishSpec> = {
     shortNote:
       'Solvent-based alkyd enamel that cures into a rock-hard, mirror-gloss protective armor. Resists rust, impact, moisture, and harsh sun on metal gates, timber doors, trim, and wet-zone walls.',
     prices: {
-      '4L': 21000,
-      '20L': 88000,
+      '4L': 15000,
+      '20L': 80000,
     },
     description:
       'Industrial-strength alkyd resin coating crafted by Grone Global Paints to form an impenetrable, mirror-smooth protective film against torrential rain, coastal salinity, and abrasion.',
@@ -177,33 +179,48 @@ export const PAINT_FINISHES: Record<PaintTypeKey, PaintFinishSpec> = {
     shortNote:
       'Ready-to-use, polymer-modified ultra-white acrylic wall screeding paste & skim putty. Levels rough masonry and fills pores into a glass-smooth finish while reducing paint consumption by up to 25%.',
     prices: {
-      '4L': 7500,
-      '20L': 32000,
+      '4L': 4000,
+      '20L': 17000,
     },
     description:
-      'Manufactured by Grone Global Paints in 4-Litre and 20-Litre plastic buckets, our high-density acrylic wall screeding putty bonds permanently to sand-cement plaster, eliminating pinholes and preparing walls for Emulsion, Matte, or Silk finishes.',
+      'Manufactured by Grone Global Paints in 4-Litre and 20-Litre plastic buckets, our high-density acrylic wall screeding putty bonds permanently to sand-cement plaster, eliminating pinholes and preparing walls for Emulsion, Acrylic, or Silk finishes.',
   },
 };
+
+// Drawer and footer shortcuts into the Paints homepage sections (the ids live in PaintsHomeView).
+export const PAINTS_SECTION_LINKS = [
+  { id: 'bucket-sizes', label: 'Bucket Sizes' },
+  { id: 'paint-finishes', label: 'Paint Finishes' },
+  { id: 'paint-services', label: 'Services' },
+  { id: 'coverage-estimator', label: 'Coverage Estimator' },
+  { id: 'request-quote', label: 'Request a Quote' },
+];
+
+export const PAINT_CATALOG_TABS: { label: string; keys: PaintTypeKey[] }[] = [
+  { label: 'Interior Finishes', keys: ['emulsion', 'silk'] },
+  { label: 'Exterior & Weather', keys: ['acrylic', 'oil'] },
+  { label: 'Surface Prep', keys: ['screeding'] },
+];
 
 export const SCREEDING_GRADES: ScreedingGradeOption[] = [
   { code: 'GP-INT', name: 'Ultra-White Interior Acrylic Screeding Putty', hex: '#F9F9F7', usage: 'Living rooms, bedrooms, ceilings & offices' },
   { code: 'GP-EXT', name: 'Weather-Shield Exterior Acrylic Putty', hex: '#F1F2EE', usage: 'Rain & UV-resistant exterior building facades' },
   { code: 'GP-CRK', name: 'Heavy-Fill Crack & Joint Skim Putty', hex: '#ECECE6', usage: 'Deep masonry pores, chases & hairline cracks' },
-  { code: 'GP-PRM', name: 'Fine Mirror-Finish Satin Prep Putty', hex: '#FFFFFF', usage: 'Ultra-smooth substrate prep for Silk & Matte paint' },
+  { code: 'GP-PRM', name: 'Fine Mirror-Finish Satin Prep Putty', hex: '#FFFFFF', usage: 'Ultra-smooth substrate prep for Silk & Acrylic paint' },
 ];
 
 export const CURATED_SWATCHES: ColorSwatch[] = [
-  { code: 'GR-101', name: 'Warm Alabaster', hex: '#F3EFE6', family: 'Architectural Neutrals', recommendedFinish: 'Matte / Silk' },
-  { code: 'GR-104', name: 'Ikoyi Travertine', hex: '#E4DACB', family: 'Architectural Neutrals', recommendedFinish: 'Matte / Silk' },
-  { code: 'GR-108', name: 'Abuja Sandstone', hex: '#D2B48C', family: 'Earth & Ochre', recommendedFinish: 'Emulsion / Matte' },
-  { code: 'GR-204', name: 'Sahara Terracotta', hex: '#B85D3B', family: 'Earth & Ochre', recommendedFinish: 'Matte / Silk' },
+  { code: 'GR-101', name: 'Warm Alabaster', hex: '#F3EFE6', family: 'Architectural Neutrals', recommendedFinish: 'Acrylic / Silk' },
+  { code: 'GR-104', name: 'Ikoyi Travertine', hex: '#E4DACB', family: 'Architectural Neutrals', recommendedFinish: 'Acrylic / Silk' },
+  { code: 'GR-108', name: 'Abuja Sandstone', hex: '#D2B48C', family: 'Earth & Ochre', recommendedFinish: 'Emulsion / Acrylic' },
+  { code: 'GR-204', name: 'Sahara Terracotta', hex: '#B85D3B', family: 'Earth & Ochre', recommendedFinish: 'Acrylic / Silk' },
   { code: 'GR-210', name: 'Royal Burnt Amber', hex: '#8F3F24', family: 'Earth & Ochre', recommendedFinish: 'Oil / Silk' },
-  { code: 'GR-302', name: 'Savannah Olive Sage', hex: '#7C8C76', family: 'Botanical & Mineral', recommendedFinish: 'Matte / Silk' },
-  { code: 'GR-309', name: 'Emerald Canopy', hex: '#284E3A', family: 'Botanical & Mineral', recommendedFinish: 'Matte / Oil' },
-  { code: 'GR-401', name: 'Atlantic Mist Grey', hex: '#CBD2D9', family: 'Cool Slates', recommendedFinish: 'Emulsion / Matte' },
-  { code: 'GR-408', name: 'Victoria Island Slate', hex: '#4A5568', family: 'Cool Slates', recommendedFinish: 'Matte / Silk' },
-  { code: 'GR-415', name: 'Deep Obsidian Navy', hex: '#1E293B', family: 'Cool Slates', recommendedFinish: 'Matte / Oil' },
-  { code: 'GR-502', name: 'Sovereign Gold Ochre', hex: '#C6922C', family: 'Heritage Accents', recommendedFinish: 'Silk / Matte' },
+  { code: 'GR-302', name: 'Savannah Olive Sage', hex: '#7C8C76', family: 'Botanical & Mineral', recommendedFinish: 'Acrylic / Silk' },
+  { code: 'GR-309', name: 'Emerald Canopy', hex: '#284E3A', family: 'Botanical & Mineral', recommendedFinish: 'Acrylic / Oil' },
+  { code: 'GR-401', name: 'Atlantic Mist Grey', hex: '#CBD2D9', family: 'Cool Slates', recommendedFinish: 'Emulsion / Acrylic' },
+  { code: 'GR-408', name: 'Victoria Island Slate', hex: '#4A5568', family: 'Cool Slates', recommendedFinish: 'Acrylic / Silk' },
+  { code: 'GR-415', name: 'Deep Obsidian Navy', hex: '#1E293B', family: 'Cool Slates', recommendedFinish: 'Acrylic / Oil' },
+  { code: 'GR-502', name: 'Sovereign Gold Ochre', hex: '#C6922C', family: 'Heritage Accents', recommendedFinish: 'Silk / Acrylic' },
   { code: 'GR-600', name: 'Brilliant Pure White', hex: '#FFFFFF', family: 'Architectural Neutrals', recommendedFinish: 'All Finishes' },
 ];
 
@@ -225,7 +242,7 @@ export const PAINTS_SERVICES = [
     summary:
       'Custom chemical formulation and high-volume paint production in durable 20L and 4L plastic buckets for real estate developers, housing estates, hospitality chains, and government projects.',
     highlights: [
-      'Custom color matching (RAL, Pantone, and architectural swatch replication) across Emulsion, Matte, Silk, and Oil finishes.',
+      'Custom color matching (RAL, Pantone, and architectural swatch replication) across Emulsion, Acrylic, Silk, and Oil finishes.',
       'Private-label & estate-branded heavy-duty 20L and 4L plastic packaging with batch quality certificates.',
       'Tropicalized anti-fungal, UV-stabilized, and alkali-resistant formulations tailored to Nigerian weather conditions.',
     ],
@@ -240,7 +257,7 @@ export const PAINTS_SERVICES = [
       'Industrial manufacturing and bulk supply of ultra-white acrylic wall screeding paste, interior/exterior skim-coat putty, hairline crack fillers, and smooth plaster-leveling compounds.',
     highlights: [
       'Ready-to-use high-adhesion acrylic wall screeding paste and polymer-modified white putty formulated for zero peeling or flaking.',
-      'Creates a glass-smooth, non-powdery substrate that reduces paint consumption by up to 25% before applying Emulsion, Matte, or Silk.',
+      'Creates a glass-smooth, non-powdery substrate that reduces paint consumption by up to 25% before applying Emulsion, Acrylic, or Silk.',
       'Available in 20L heavy-duty plastic buckets and bulk estate developer batches with rapid drying and effortless sanding.',
     ],
     metrics: 'Interior & Weather-Resistant Exterior Putty · Mirror-Smooth Finish',
@@ -265,9 +282,9 @@ export const PAINTS_SERVICES = [
     category: 'Industrial Formulation, Paint, Screeding & Putty Training',
     image: IMAGES.paintLabFormulation,
     summary:
-      'Hands-on laboratory and factory floor training programs covering full industrial chemical formulation for Emulsion, Matte, Silk, Oil paints, as well as Screeding & Putty material production.',
+      'Hands-on laboratory and factory floor training programs covering full industrial chemical formulation for Emulsion, Acrylic, Silk, Oil paints, as well as Screeding & Putty material production.',
     highlights: [
-      'Practical formulation of Emulsion, Dead-Flat Matte, Silk Satin, Textcoat, Alkyd Gloss Oil paints, plus Acrylic Screeding & Wall Putty.',
+      'Practical formulation of Emulsion, Acrylic, Silk Satin, Textcoat, Alkyd Gloss Oil paints, plus Acrylic Screeding & Wall Putty.',
       'Raw material stoichiometry: Titanium Dioxide (TiO₂), Calcium Carbonate, Acrylic Binders, POP/Putty Modifiers, Coalescents, and Biocides.',
       'Complete factory equipment advisory, SON quality compliance guidance, and post-training technical mentorship.',
     ],
